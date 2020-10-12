@@ -25,7 +25,7 @@ You can run WebGoat within a Docker container.
 1. Run the container using `docker run -v $PWD/contrast_security.yaml:/etc/contrast/java/contrast_security.yaml -p 8080:8080 webgoat:7.1`
 1. Browse the application at http://localhost:8080/WebGoat/
 
-# Running in Azure (Azure App Service):
+# Running in Azure (Azure Container Instance):
 
 ## Pre-Requisites
 
