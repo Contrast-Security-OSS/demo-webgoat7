@@ -46,6 +46,7 @@ const puppeteer = require('puppeteer');
     console.log('Exercising SQLi')
     await page.waitFor(5000)
     await page.goto(process.env.BASEURL  + '/start.mvc#attack/538385464/1100', spaPageOptions)
+    await page.waitFor(5000)
     await page.waitForSelector('input[name="account_name"]', selectorOptions)
     await page.focus('input[name="account_name"]')
     await page.evaluate( () => document.execCommand( 'selectall', false, null ) )

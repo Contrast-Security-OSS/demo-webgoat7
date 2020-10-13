@@ -60,11 +60,13 @@ pipeline {
         }
         stage('exercise') {
             steps {
-                timeout(20) {
-                    sh """
-                    FQDN=\$(terraform output fqdn)
-                    BASEURL=\$FQDN node exercise.js
-                    """
+                catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
+                    timeout(20) {
+                        sh """
+                        FQDN=\$(terraform output fqdn)
+                        BASEURL=\$FQDN node exercise.js
+                        """
+                    }
                 }
             }
         }
