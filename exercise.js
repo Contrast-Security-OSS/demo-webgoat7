@@ -15,16 +15,14 @@ const puppeteer = require('puppeteer');
       browser = await puppeteer.launch();
     }
 
-    const sqliPayload = "Smith' or '98'='98"
-    const xxsPayload = "<script>alert('XSS Test')</script>"
-
     const page = await browser.newPage()
     page.setDefaultNavigationTimeout(120000) //2 mins
 
-    const navigationPromise = page.waitForNavigation()
-    const pageOptions = {waitUntil: 'networkidle2'}
-    const spaPageOptions = {waitUntil: 'networkidle0'}
-    const selectorOptions = {"timeout": 30000} //30 secs
+    const pageOptions = {waitUntil: 'domcontentloaded'}
+    const selectorOptions = {"timeout": 120000} //2 mins
+
+    const sqliPayload = "Smith' or '98'='98"
+    const xxsPayload = "<script>alert('XSS Test')</script>"
 
     //logging in 
     try {
@@ -39,21 +37,25 @@ const puppeteer = require('puppeteer');
     await page.waitForSelector('input#exampleInputEmail1', selectorOptions)
     await page.type('input#exampleInputEmail1', 'webgoat')
     await page.type('input#exampleInputPassword1', 'webgoat')
+    await page.waitForSelector('button.btn.btn-large.btn-primary', selectorOptions)
     await page.click('button.btn.btn-large.btn-primary')
-    await navigationPromise
     
+    await page.waitFor(10000)
+
     //exercising sqli vulnerability
     console.log('Exercising SQLi')
-    await page.waitFor(5000)
-    await page.goto(process.env.BASEURL  + '/start.mvc#attack/538385464/1100', spaPageOptions)
-    await page.waitFor(5000)
+    await page.goto(process.env.BASEURL  + '/start.mvc#attack/538385464/1100', pageOptions)    
+    console.log('Waiting for account_name')
     await page.waitForSelector('input[name="account_name"]', selectorOptions)
     await page.focus('input[name="account_name"]')
     await page.evaluate( () => document.execCommand( 'selectall', false, null ) )
     await page.keyboard.press( 'Delete' )
     await page.keyboard.type( 'John3' )
+    await page.waitForSelector('input[name="SUBMIT"]', selectorOptions)
+    console.log('Submitting page')
     await page.click('input[name="SUBMIT"]')
-    await navigationPromise
+
+    await page.waitFor(10000)
 
     page.on('dialog', async dialog => {
       console.log(dialog.message());
@@ -62,29 +64,30 @@ const puppeteer = require('puppeteer');
 
     //attacking xss vulnerability
     console.log('Exploiting XSS')
-    await page.waitFor(5000)
     await page.goto(process.env.BASEURL  + '/start.mvc#attack/1406352188/900', pageOptions)
+    console.log('Waiting for field1')
     await page.waitForSelector('input[name="field1"]', selectorOptions)
     await page.focus('input[name="field1"]')
     await page.evaluate( () => document.execCommand( 'selectall', false, null ) );
     await page.keyboard.press( 'Delete' );
     await page.keyboard.type(xxsPayload);
-    await page.waitFor(1000)
+    await page.waitForSelector('input[name="SUBMIT"]', selectorOptions)
     await page.click('input[name="SUBMIT"]')
-    await navigationPromise
+
+    await page.waitFor(10000)
 
     //attacking sqli vulnerability
     console.log('Exploiting SQLi')
-    await page.waitFor(5000)
     await page.goto(process.env.BASEURL  + '/start.mvc#attack/538385464/1100', pageOptions)
     await page.waitForSelector('input[name="account_name"]', selectorOptions)
     await page.focus('input[name="account_name"]')
     await page.evaluate( () => document.execCommand( 'selectall', false, null ) )
     await page.keyboard.press( 'Delete' )
     await page.keyboard.type( sqliPayload )
-    await page.waitFor(1000)
+    await page.waitForSelector('input[name="SUBMIT"]', selectorOptions)
     await page.click('input[name="SUBMIT"]')
-    await navigationPromise
+
+    await page.waitFor(10000)
 
     browser.close()
     console.log('End')
