@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    image: webgoat:7.1
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./contrast_security.yaml:/etc/contrast/java/contrast_security.yaml
+    environment:
+      - CONTRAST__AGENT__JAVA__STANDALONE_APP_NAME=webgoat7
