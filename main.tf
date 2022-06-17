@@ -34,7 +34,7 @@ resource "azurerm_container_group" "app" {
       protocol = "TCP"
     }
     environment_variables = {
-      JAVA_TOOL_OPTIONS = "-javaagent:/opt/contrast/contrast.jar -Dcontrast.api.url=${data.external.yaml.result.url} -Dcontrast.api.api_key=${data.external.yaml.result.api_key} -Dcontrast.api.service_key=${data.external.yaml.result.service_key} -Dcontrast.api.user_name=${data.external.yaml.result.user_name} -Dcontrast.agent.java.standalone_app_name=${var.appname} -Dcontrast.server=${var.servername} -Dcontrast.env=${var.environment}"
+      JAVA_TOOL_OPTIONS = "-javaagent:/opt/contrast/contrast.jar -Dcontrast.api.url=${data.external.yaml.result.url} -Dcontrast.api.api_key=${data.external.yaml.result.api_key} -Dcontrast.api.service_key=${data.external.yaml.result.service_key} -Dcontrast.api.user_name=${data.external.yaml.result.user_name} -Dcontrast.application.name=${var.appname} -Dcontrast.server=${var.servername} -Dcontrast.env=${var.environment} -Dcontrast.application.session_metadata=${var.session_metadata}"
     }
   }
 }
