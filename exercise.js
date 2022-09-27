@@ -40,7 +40,7 @@ const puppeteer = require('puppeteer');
     await page.waitForSelector('button.btn.btn-large.btn-primary', selectorOptions)
     await page.click('button.btn.btn-large.btn-primary')
     
-    await page.waitFor(10000)
+    await page.waitForTimeout(10000)
 
     //exercising sqli vulnerability
     console.log('Exercising SQLi')
@@ -55,7 +55,7 @@ const puppeteer = require('puppeteer');
     console.log('Submitting page')
     await page.click('input[name="SUBMIT"]')
 
-    await page.waitFor(10000)
+    await page.waitForTimeout(10000)
 
     page.on('dialog', async dialog => {
       console.log(dialog.message());
@@ -74,7 +74,7 @@ const puppeteer = require('puppeteer');
     await page.waitForSelector('input[name="SUBMIT"]', selectorOptions)
     await page.click('input[name="SUBMIT"]')
 
-    await page.waitFor(10000)
+    await page.waitForTimeout(10000)
 
     //attacking sqli vulnerability
     console.log('Exploiting SQLi')
@@ -87,7 +87,7 @@ const puppeteer = require('puppeteer');
     await page.waitForSelector('input[name="SUBMIT"]', selectorOptions)
     await page.click('input[name="SUBMIT"]')
 
-    await page.waitFor(10000)
+    await page.waitForTimeout(10000)
 
     browser.close()
     console.log('End')
