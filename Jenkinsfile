@@ -2,7 +2,6 @@ pipeline {
     agent any
     tools {
         terraform 'terraform'
-        nodejs 'node-lts'
     }
 
     stages {
@@ -16,7 +15,7 @@ pipeline {
                 }
                 sh '''
                 terraform init -upgrade
-                npm init playwright@latest -- --quiet --browser=chromium
+                npm link @playwright/test
                 '''
             }
         }
