@@ -56,7 +56,7 @@ pipeline {
                     timeout(20) {
                         sh """
                         FQDN=\$(terraform output --raw fqdn)
-                        BASEURL=\$FQDN node exercise.js
+                        BASEURL=\$FQDN npx playwright test e2e/assess/*.ts
                         """
                     }
                 }
@@ -94,7 +94,7 @@ pipeline {
                     timeout(20) {
                         sh """
                         FQDN=\$(terraform output --raw fqdn)
-                        BASEURL=\$FQDN node exercise.js
+                        BASEURL=\$FQDN npx playwright test e2e/assess/*.ts
                         """
                     }
                 }
@@ -128,7 +128,7 @@ pipeline {
                     timeout(20) {
                         sh """
                         FQDN=\$(terraform output --raw fqdn)
-                        BASEURL=\$FQDN node exercise.js
+                        BASEURL=\$FQDN npx playwright test e2e/protect/*.ts
                         """
                     }
                 }

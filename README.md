@@ -44,9 +44,8 @@ You can run WebGoat within a Docker container.
 
 There is a test script which you can use to reveal vulnerabilities which requires node and puppeteer.
 
-1. Install Node, NPM and Chrome.
-1. From the app folder run `npm i puppeteer`.
-1. Run `BASEURL=https://<your service name>.azurewebsites.net node exercise.js` or `BASEURL=https://<your service name>.azurewebsites.net DEBUG=true node exercise.js` to watch the automated script.
+1. Install NPM, Node, Chrome and Playwright `npm i playwright`
+1. Run `BASEURL=<url> npx playwright test e2e/assess/*.ts`
 
 ## Updating the Docker Image
 
