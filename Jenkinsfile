@@ -34,7 +34,7 @@ pipeline {
                                 -var 'initials=$initials' \
                                 -var 'environment=qa' \
                                 -var 'servername=jenkins' \
-                                -var 'session_metadata=branchName=qa,committer=Sanjay,buildNumber=${env.BUILD_NUMBER}'
+                                -var 'session_metadata="branchName=qa,committer=Sanjay,buildNumber=${env.BUILD_NUMBER}"'
                             """
                         } catch (Exception e) {
                             echo "Terraform refresh failed, deleting state"
@@ -77,7 +77,7 @@ pipeline {
                                 -var 'initials=$initials' \
                                 -var 'environment=development' \
                                 -var 'servername=Macbook-Pro' \
-                                -var 'session_metadata=branchName=feat: add new exercise for SSRF,committer=Lara,buildNumber=${env.BUILD_NUMBER}'     
+                                -var 'session_metadata="branchName=feat: add new exercise for SSRF,committer=Lara,buildNumber=${env.BUILD_NUMBER}"'     
                             """
                         } catch (Exception e) {
                             echo "Terraform refresh failed, deleting state"
