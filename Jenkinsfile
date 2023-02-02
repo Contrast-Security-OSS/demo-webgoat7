@@ -46,7 +46,7 @@ pipeline {
                 }
             }
         }
-        stage('sleeping') {
+        stage('sleeping - qa') {
             steps {
                 sleep 120
             }
@@ -89,6 +89,11 @@ pipeline {
                 }
             }
         }
+        stage('sleeping - dev') {
+            steps {
+                sleep 120
+            }
+        }
         stage('exercise - dev') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
@@ -121,6 +126,11 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+        stage('sleeping - prod') {
+            steps {
+                sleep 120
             }
         }
         stage('exercise - prod') {
