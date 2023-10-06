@@ -7,7 +7,7 @@ WORKDIR /webgoat7.1
 ADD ./webgoat-container-7.1-exec.jar /webgoat7.1/webgoat-container-7.1-exec.jar
 
 #Add Contrast
-ADD https://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.contrastsecurity&a=contrast-agent&v=LATEST /opt/contrast/contrast.jar
+COPY --from=contrast/agent-java:5 /contrast/contrast-agent.jar /opt/contrast/contrast.jar
 
 #Enable Contrast
 ENV JAVA_TOOL_OPTIONS='-javaagent:/opt/contrast/contrast.jar'
