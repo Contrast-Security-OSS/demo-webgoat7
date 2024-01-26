@@ -29,13 +29,30 @@ resource "azurerm_container_group" "app" {
     image  = "contrastsecuritydemo/webgoat:7.1"
     cpu    = "1"
     memory = "1.5"
+    
     ports {
       port     = 8080
       protocol = "TCP"
     }
+    
     environment_variables = {
       JAVA_TOOL_OPTIONS = "-javaagent:/opt/contrast/contrast.jar -Dcontrast.api.url=${data.external.yaml.result.url} -Dcontrast.api.api_key=${data.external.yaml.result.api_key} -Dcontrast.api.service_key=${data.external.yaml.result.service_key} -Dcontrast.api.user_name=${data.external.yaml.result.user_name} -Dcontrast.application.name=${var.appname} -Dcontrast.server=${var.servername} -Dcontrast.env=${var.environment} -Dcontrast.application.session_metadata=${var.session_metadata}"
     }
+
+    readiness_probe {
+      http_get {
+        path = "/WebGoat"
+        port = 8080
+        scheme = "Http"
+      }
+      initial_delay_seconds = 30
+      period_seconds        = 15
+      timeout_seconds       = 5
+      success_threshold     = 1
+      failure_threshold     = 20
+    }
+
   }
+  
 }
 
